@@ -1,6 +1,7 @@
 from flask import Flask, flash, redirect, render_template
 import psycopg2
-import config
+import config.py
+from datetime import datetime, timedelta
 
 
 app = Flask(__name__)
@@ -19,7 +20,7 @@ def getData():
 	if cursor:
 		print ("connected to postgresql")
 
-	sql_statement = "SELECT * FROM station_status;"
+	sql_statement = "SELECT * FROM station_status WHERE timestamp>'"+str(datetime.now()-timedelta(seconds = 10))+"';"
 
 	cursor.execute(sql_statement)
 
@@ -41,11 +42,15 @@ def getData():
 
 
 
+@app.route("/update/")
+def update():
+	return getData()
+
 # put routes into another file
 @app.route("/")
 def index():
 	station_data = getData()
-	
+
 	return render_template(
 		'index.html', station_data = station_data)
 
