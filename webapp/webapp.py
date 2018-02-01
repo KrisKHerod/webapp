@@ -1,7 +1,8 @@
 from flask import Flask, flash, redirect, render_template
 import psycopg2
-import config.py
+import config
 from datetime import datetime, timedelta
+import json
 
 
 app = Flask(__name__)
@@ -12,7 +13,7 @@ app = Flask(__name__)
 # put this into another file
 def getData():
 
-	conn_string = "host='%s' port='%s' dbname='%s' user='%s' password='%s'"%(config['db_host'], config['db_port'], config['db_name'], config['db_user_name'], config['db_password'])
+	conn_string = "host='%s' port='%s' dbname='%s' user='%s' password='%s'"%(config.db_host, config.db_port, config.db_name, config.db_user_name, config.db_password)
 	conn = psycopg2.connect(conn_string)
 
 	cursor = conn.cursor()
@@ -42,9 +43,10 @@ def getData():
 
 
 
-@app.route("/update/")
+@app.route("/update")
 def update():
-	return getData()
+	return json.dumps(getData())
+
 
 # put routes into another file
 @app.route("/")
