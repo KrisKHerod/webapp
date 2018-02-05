@@ -21,25 +21,28 @@ def getData():
 	if cursor:
 		print ("connected to postgresql")
 
-	sql_statement = "SELECT * FROM station_status WHERE timestamp>'"+str(datetime.now()-timedelta(seconds = 10))+"';"
+	#sql_statement = "SELECT * FROM station_status WHERE timestamp>'"+str(datetime.now()-timedelta(seconds = 10))+"';"
+
+    sql_statement = "SELECT station_id, group_id, concentration, latitude, longitude, warning_status, alert_stat$
 
 	cursor.execute(sql_statement)
 
-	station_data = {}
+    station_data = []
 
 
-	for station in cursor.fetchall():
-		station_data[station[0]] = {
-			'group_id': station[1],
-			'concentration': station[2],
-			'latitude': station[3],
-			'longitude': station[4],
-			'warning_status': station[5],
-			'alert_status': station[6],
-			'device_status': station[7]
-		}
+    for station in cursor.fetchall():
+        station_data.append ({
+                        'group_id': station[1],
+                        'concentration': station[2],
+                        'latitude': station[3],
+                        'longitude': station[4],
+                        'warning_status': station[5],
+                        'alert_status': station[6],
+                        'device_status': station[7]
+                })
 
-	return station_data
+    return station_data
+
 
 
 

@@ -18,9 +18,8 @@ function updateMap() {
     function loadJSON(callback) {
         var xobj = new XMLHttpRequest();
         xobj.overrideMimeType("application/json");
-        xobj.open('GET', '/getData', true);
+        xobj.open('GET', '/update', true);
         xobj.onreadystatechange = function () {
-            console.log("asdf");
             if (xobj.readyState == 4 && xobj.status == "200") {
                 callback(xobj.responseText);
             }
@@ -38,22 +37,22 @@ function updateMap() {
         }
 
         // console.log(response);
-        beaches = JSON.parse(response);
-        console.log(beaches);
-        console.log(map);
+        stations = JSON.parse(response);
+        // console.log(beaches);
+        // console.log(map);
 
-        var markers = beaches.map(function(res, i){
+        var markers = stations.map(function(res, i){
             
-        var contentString = "<h1>" + res.group_id + "</h1><br />";
-            contentString += "ID: " + res.group_id + "<br />";
+        var contentString = "<h1>Sensor: " + res.group_id + "</h1><br />";
+            contentString += "Concentration " + res.concentration + " ppm<br />";
             contentString += "Position: " + res.latitude.toString() + ", ";
             contentString += res.longitude.toString();
+
 
         var infowindow = new google.maps.InfoWindow({
             content: contentString
         });
 
-        console.log(map);
 
         if (res.alert_status ==1){
             var marker = new google.maps.Marker({
